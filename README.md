@@ -28,3 +28,9 @@ Adam Yanalunas, adamy@amcoonline.net
 
 enhance is available under the MIT license. See the LICENSE file for more info.
 
+## Image credits
+
+* [Jonathan Heisler](https://www.flickr.com/photos/jheisler/8091823428)
+* [Unknown](http://25.media.tumblr.com/fe2bf2df91467f28035c4ce73963ad35/tumblr_mga0fa5Dk61qbh8c0o1_500.jpg)
+* [J. Bower](https://www.flickr.com/photos/danska8/15316094076/)
+* [autorin22](https://www.flickr.com/photos/44247215@N00/375460541)
