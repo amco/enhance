@@ -1,6 +1,6 @@
 # enhance
 
-[![CI Status](http://img.shields.io/travis/Adam Yanalunas/enhance.svg?style=flat)](https://travis-ci.org/Adam Yanalunas/enhance)
+[![CI Status](http://img.shields.io/travis/amco/enhance.svg?style=flat)](https://travis-ci.org/amco/enhance)
 [![Version](https://img.shields.io/cocoapods/v/enhance.svg?style=flat)](http://cocoadocs.org/docsets/enhance)
 [![License](https://img.shields.io/cocoapods/l/enhance.svg?style=flat)](http://cocoadocs.org/docsets/enhance)
 [![Platform](https://img.shields.io/cocoapods/p/enhance.svg?style=flat)](http://cocoadocs.org/docsets/enhance)
@@ -10,6 +10,8 @@
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
 ## Requirements
+
+* iOS 7 and up
 
 ## Installation
 
