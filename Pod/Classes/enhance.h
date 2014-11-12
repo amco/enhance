@@ -1,13 +1,14 @@
 //
-//  Header.h
-//  Pods
+//  enhance.h
+//  Enhance
 //
 //  Created by Adam Yanalunas on 11/12/14.
 //
 //
 
-#ifndef Pods_Header_h
-#define Pods_Header_h
+#ifndef Pods_Enhance_h
+#define Pods_Enhance_h
 
+#import "ENHViewController.h"
 
 #endif

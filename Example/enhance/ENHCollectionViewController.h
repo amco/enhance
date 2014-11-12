@@ -7,11 +7,13 @@
 //
 
 
+#import <enhance/enhance.h>
 #import <UIKit/UIKit.h>
 
 
 @interface ENHCollectionViewController : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegate>
 
+@property (nonatomic, strong) ENHViewController *enhancer;
 @property (nonatomic, strong) NSArray *images;
 
 @end

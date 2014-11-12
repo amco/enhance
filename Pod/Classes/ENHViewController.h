@@ -72,6 +72,15 @@
 // HTTP header values included in URL requests
 @property (nonatomic, strong) NSDictionary *requestHTTPHeaders;
 
+
+/**
+ * Designated initializer to capture the parent view controller
+ *
+ * @param viewController The parent view controller to which enhance views are added
+ */
++ (instancetype)enhanceUsingViewController:(UIViewController *)viewController;
+
+
 /**
  *  Convenience method for not using a parentViewController.
  *  @see showImage:fromView:inViewController

@@ -28,7 +28,9 @@
 #pragma mark - UICollectionViewDelegate methods
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"%@", indexPath);
+    UIImage *img = self.images[indexPath.item];
+    UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
+    [self.enhancer showImage:img fromView:cell];
 }
 
 
@@ -40,6 +42,19 @@
 
 
 #pragma mark - Properties
+- (ENHViewController *)enhancer
+{
+    if (_enhancer) return _enhancer;
+    
+    _enhancer = [ENHViewController enhanceUsingViewController:self];
+    _enhancer.shouldBlurBackground = NO;
+    _enhancer.parallaxEnabled = NO;
+    _enhancer.shouldDismissOnTap = YES;
+    
+    return _enhancer;
+}
+
+
 - (NSArray *)images
 {
     if (_images) return _images;

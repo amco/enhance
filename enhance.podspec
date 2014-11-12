@@ -10,7 +10,7 @@
 Pod::Spec.new do |s|
   s.name             = "enhance"
   s.version          = "0.1.0"
-  s.summary          = "A short description of enhance."
+  s.summary          = "A simple image viewer with zooming and UIDynamics for maximum fun"
   s.description      = <<-DESC
                        An optional longer description of enhance
 
@@ -29,10 +29,10 @@ Pod::Spec.new do |s|
 
   s.source_files = 'Pod/Classes'
   s.resource_bundles = {
-    'enhance' => ['Pod/Assets/*.png']
+    'enhance_resources' => ['Pod/Assets/**']
   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
+  s.frameworks = 'UIKit', 'Accelerate', 'QuartzCore', 'AssetsLibrary'
   # s.dependency 'AFNetworking', '~> 2.3'
 end

@@ -1,0 +1,1 @@
+PODS_ENHANCE_ENHANCE_OTHER_LDFLAGS = -framework "Accelerate" -framework "AssetsLibrary" -framework "QuartzCore" -framework "UIKit"
