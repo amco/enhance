@@ -69,7 +69,6 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 @property (nonatomic, strong) UIView *blurredSnapshotView;
 @property (nonatomic, strong) UIView *snapshotView;
 
-- (void)repositionToOrientation:(UIInterfaceOrientation)orientation;
 
 @end
 
@@ -122,27 +121,8 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     _hasLaidOut = NO;
     _unhideStatusBarOnDismiss = YES;
     
-//    self.view.frame = self.keyWindow.bounds;
-    
-//    self.backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.keyWindow.frame), CGRectGetHeight(self.keyWindow.frame))];
     self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:__overlayAlpha];
-    self.backgroundView.alpha = 0.0f;
-//    self.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-//    [self.view addSubview:self.backgroundView];
-//    [self.view sendSubviewToBack:self.backgroundView];
     
-//    self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-//    self.scrollView.backgroundColor = [UIColor clearColor];
-//    self.scrollView.delegate = self;
-//    self.scrollView.showsHorizontalScrollIndicator = NO;
-//    self.scrollView.showsVerticalScrollIndicator = NO;
-//    self.scrollView.scrollEnabled = NO;
-//    [self.view addSubview:self.scrollView];
-    
-//    self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50.0, 50.0)];
-//    self.imageView.contentMode = UIViewContentModeScaleAspectFit;
-//    self.imageView.alpha = 0.0f;
-//    self.imageView.userInteractionEnabled = YES;
     // Enable edge antialiasing on 7.0 or later.
     // This symbol appears pre-7.0 but is not considered public API until 7.0
     if (([[[UIDevice currentDevice] systemVersion] compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending)) {
@@ -237,8 +217,10 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     NSAssert(image, @"Image is required");
     
     [self view]; // make sure view has loaded first
+    CGRect bounds = self.keyWindow.bounds;
+    self.view.frame = bounds;
+    
     _currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
-    //fromRect = CGRectApplyAffineTransform(fromRect, [self transformForOrientation:_currentOrientation]);
     self.fromRect = fromRect;
     
     self.imageView.transform = CGAffineTransformIdentity;
@@ -274,9 +256,6 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     self.imageView.frame = [self.view convertRect:fromRect fromView:nil];
     _originalFrame = targetRect;
     
-    // rotate imageView based on current device orientation
-    [self reposition];
-    
     if (scale < 1.0f) {
         self.scrollView.minimumZoomScale = 1.0f;
         self.scrollView.maximumZoomScale = 1.0f / scale;
@@ -290,11 +269,6 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     _maxScale = self.scrollView.maximumZoomScale;
     _lastPinchScale = 1.0f;
     _hasLaidOut = YES;
-    
-    // register for device orientation changes
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
-//    // register with the device that we want to know when the device orientation changes
-//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     
     if (self.targetViewController) {
         [self willMoveToParentViewController:self.targetViewController];
@@ -397,15 +371,6 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 }
 
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    [UIView animateWithDuration:duration animations:^{
-        [self repositionToOrientation:toInterfaceOrientation];
-    }];
-}
-
-
 - (void)dismiss:(BOOL)animated {
     if (animated) {
         [self dismissToTargetView];
@@ -502,41 +467,6 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     self.blurredSnapshotView = snapshotView;
 }
 
-- (void)adjustFrame {
-    CGRect imageFrame = self.imageView.frame;
-    
-    // snap x sides
-    if (CGRectGetWidth(imageFrame) > CGRectGetWidth(self.view.frame)) {
-        if (CGRectGetMinX(imageFrame) > 0) {
-            imageFrame.origin.x = 0;
-        }
-        else if (CGRectGetMaxX(imageFrame) < CGRectGetWidth(self.view.frame)) {
-            imageFrame.origin.x = CGRectGetWidth(self.view.frame) - CGRectGetWidth(imageFrame);
-        }
-    }
-    else if (self.imageView.center.x != CGRectGetMidX(self.view.frame)) {
-        imageFrame.origin.x = CGRectGetMidX(self.view.frame) - CGRectGetWidth(imageFrame) / 2.0f;
-    }
-    
-    // snap y sides
-    if (CGRectGetHeight(imageFrame) > CGRectGetHeight(self.view.frame)) {
-        if (CGRectGetMinY(imageFrame) > 0) {
-            imageFrame.origin.y = 0;
-        }
-        else if (CGRectGetMaxY(imageFrame) < CGRectGetHeight(self.view.frame)) {
-            imageFrame.origin.y = CGRectGetHeight(self.view.frame) - CGRectGetHeight(imageFrame);
-        }
-    }
-    else if (self.imageView.center.y != CGRectGetMidY(self.view.frame)) {
-        imageFrame.origin.y = CGRectGetMidY(self.view.frame) - CGRectGetHeight(imageFrame) / 2.0f;
-    }
-    
-    [UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        self.imageView.frame = imageFrame;
-    } completion:^(BOOL finished) {
-        
-    }];
-}
 
 /**
  *	When adding UIDynamics to a view, it resets `zoomScale` on UIScrollView back to 1.0, which is an issue when applying dynamics
@@ -564,6 +494,8 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     }
     [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         self.imageView.transform = CGAffineTransformIdentity;
+        // TODO: Kill _originalFrame?
+//        self.imageView.frame = self.fromRect;
         self.imageView.frame = _originalFrame;
     } completion:nil];
 }
@@ -608,9 +540,6 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     if (self.animator) {
         [self.animator removeAllBehaviors];
     }
-    
-//    [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if ([self.delegate respondsToSelector:@selector(enhanceViewControllerDidDisappear:)]) {
         [self.delegate enhanceViewControllerDidDisappear:self];
@@ -859,77 +788,8 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     }
 }
 
-#pragma mark - Orientation Helpers
-
-- (void)deviceOrientationChanged:(NSNotification *)notification {
-    UIInterfaceOrientation deviceOrientation = (UIInterfaceOrientation)[UIDevice currentDevice].orientation;
-    if (_currentOrientation != deviceOrientation) {
-        _currentOrientation = deviceOrientation;
-        if (self.shouldRotateToDeviceOrientation) {
-            [self reposition];
-        }
-    }
-}
-
-- (CGAffineTransform)transformForOrientation:(UIInterfaceOrientation)orientation {
-    CGAffineTransform transform = CGAffineTransformIdentity;
-    
-    // calculate a rotation transform that matches the required orientation
-    if (orientation == UIInterfaceOrientationPortraitUpsideDown) {
-        transform = CGAffineTransformMakeRotation(M_PI);
-    }
-    else if (orientation == UIInterfaceOrientationLandscapeLeft) {
-        transform = CGAffineTransformMakeRotation(-M_PI_2);
-    }
-    else if (orientation == UIInterfaceOrientationLandscapeRight) {
-        transform = CGAffineTransformMakeRotation(M_PI_2);
-    }
-    
-    return transform;
-}
-
-- (void)reposition
-{
-    [self repositionToOrientation:_currentOrientation];
-}
-
-
-- (void)repositionToOrientation:(UIInterfaceOrientation)orientation
-{
-    CGAffineTransform baseTransform = CGAffineTransformIdentity;//[self transformForOrientation:orientation];
-    
-    // determine if the rotation we're about to undergo is 90 or 180 degrees
-    CGAffineTransform t1 = self.imageView.transform;
-    CGAffineTransform t2 = baseTransform;
-    CGFloat dot = t1.a * t2.a + t1.c * t2.c;
-    CGFloat n1 = sqrtf(t1.a * t1.a + t1.c * t1.c);
-    CGFloat n2 = sqrtf(t2.a * t2.a + t2.c * t2.c);
-    CGFloat rotationDelta = acosf(dot / (n1 * n2));
-    BOOL isDoubleRotation = (rotationDelta > 1.581);
-    
-    // use the system rotation duration
-    CGFloat duration = [UIApplication sharedApplication].statusBarOrientationAnimationDuration;
-    // iPad lies about its rotation duration
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) { duration = 0.4; }
-    
-    // double the animation duration if we're rotation 180 degrees
-    if (isDoubleRotation) { duration *= 2; }
-    
-    // if we haven't laid out the subviews yet, we don't want to animate rotation and position transforms
-    if (_hasLaidOut) {
-        [UIView animateWithDuration:duration animations:^{
-            self.imageView.transform = CGAffineTransformConcat(CGAffineTransformIdentity, baseTransform);
-        }];
-    }
-    else {
-        self.imageView.transform = CGAffineTransformConcat(CGAffineTransformIdentity, baseTransform);
-    }
-}
-
 
 @end
-
-
 
 
 @implementation UIView (URBMediaFocusViewController)
