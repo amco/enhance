@@ -47,9 +47,11 @@
     if (_enhancer) return _enhancer;
     
     _enhancer = [ENHViewController enhanceUsingViewController:self];
-    _enhancer.shouldBlurBackground = NO;
-    _enhancer.parallaxEnabled = NO;
+    _enhancer.shouldBlurBackground = YES;
+    _enhancer.parallaxEnabled = YES;
     _enhancer.shouldDismissOnTap = YES;
+    _enhancer.shouldDismissOnImageTap = YES;
+    _enhancer.shouldShowPhotoActions = YES;
     
     return _enhancer;
 }

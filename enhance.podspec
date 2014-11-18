@@ -32,6 +32,15 @@ Pod::Spec.new do |s|
     'enhance_resources' => ['Pod/Assets/**']
   }
 
+  s.subspec 'Localization' do |t|
+    %w|en|.map {|localename|
+      t.subspec localename do |u|
+        u.ios.resources = "Pod/Localization/#{localename}.lproj"
+        u.ios.preserve_paths = "Pod/Localization/#{localename}.lproj"
+     end
+    }
+  end
+
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'UIKit', 'Accelerate', 'QuartzCore', 'AssetsLibrary'
   # s.dependency 'AFNetworking', '~> 2.3'

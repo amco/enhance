@@ -25,7 +25,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="skH-Fw-u9u">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <imageView alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="U2s-24-kbz">
+                                    <imageView alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="U2s-24-kbz" customClass="ENHImageView">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                     </imageView>
                                 </subviews>
@@ -56,11 +56,39 @@
                     </view>
                     <connections>
                         <outlet property="backgroundView" destination="bjk-ED-a4O" id="je6-Lh-Vop"/>
+                        <outlet property="doubleTapRecognizer" destination="8rP-fz-IcQ" id="rWN-xc-PRF"/>
                         <outlet property="imageView" destination="U2s-24-kbz" id="pkM-o9-5A3"/>
+                        <outlet property="panRecognizer" destination="h2O-yo-9VA" id="I73-8C-8Mx"/>
+                        <outlet property="photoLongPressRecognizer" destination="67u-iN-z6K" id="11H-8i-S9Z"/>
                         <outlet property="scrollView" destination="skH-Fw-u9u" id="4zd-7V-enK"/>
+                        <outlet property="tapRecognizer" destination="suK-Nv-Pvh" id="yO4-5Z-vLV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FQy-xZ-pKs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer numberOfTapsRequired="2" id="8rP-fz-IcQ">
+                    <connections>
+                        <action selector="handleDoubleTapGesture:" destination="VsX-ln-zoG" id="v1B-3U-5vh"/>
+                        <outlet property="delegate" destination="VsX-ln-zoG" id="wqG-kr-7fF"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="suK-Nv-Pvh">
+                    <connections>
+                        <action selector="handleDismissFromTap:" destination="VsX-ln-zoG" id="1yf-5V-SqX"/>
+                        <outlet property="delegate" destination="VsX-ln-zoG" id="MUS-xU-u2x"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="67u-iN-z6K">
+                    <connections>
+                        <action selector="handleLongPressGesture:" destination="VsX-ln-zoG" id="EWR-FJ-Dij"/>
+                        <outlet property="delegate" destination="VsX-ln-zoG" id="13E-uJ-dgQ"/>
+                    </connections>
+                </pongPressGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="h2O-yo-9VA">
+                    <connections>
+                        <action selector="handlePanGesture:" destination="VsX-ln-zoG" id="M56-ok-q8x"/>
+                        <outlet property="delegate" destination="VsX-ln-zoG" id="AWM-9F-HGb"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="477" y="520"/>
         </scene>

@@ -1,5 +1,9 @@
 PODS:
-  - enhance (0.1.0)
+  - enhance (0.1.0):
+    - enhance/Localization
+  - enhance/Localization (0.1.0):
+    - enhance/Localization/en
+  - enhance/Localization/en (0.1.0)
   - Expecta (0.3.1)
   - Expecta+Snapshots (1.3.0):
     - Expecta
@@ -19,7 +23,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  enhance: f450eda07fb0228380c83df2e6793a36aa2bc619
+  enhance: 27a5979da001c22fd57b34a98cb41859dc479d37
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
   Expecta+Snapshots: 0ec8bd543329a3944f5e5dc2a5cb220c3dde4ab0
   FBSnapshotTestCase: f9f225b5ba11c8d8c09075590490df16314e4d62

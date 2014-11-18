@@ -55,6 +55,9 @@
 @property (nonatomic, assign) BOOL shouldBlurBackground;
 @property (nonatomic, assign) BOOL parallaxEnabled;
 
+// determines whether or not to hide the status bar
+@property (nonatomic, assign) BOOL shouldHideStatusBar;
+
 // determines whether or not view should be dismissed when the container view is tapped anywhere outside image bounds
 @property (nonatomic, assign) BOOL shouldDismissOnTap;
 
@@ -134,6 +137,12 @@
  *  Stop downloading the image (useful when closing a window while the image is downloading)
  */
 - (void)cancelURLConnectionIfAny;
+
+
+/**
+ *  Bundle for enhance resources
+ */
++ (NSBundle *)enhanceBundle;
 
 
 @end

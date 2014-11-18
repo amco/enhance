@@ -12,3 +12,15 @@
 #define COCOAPODS_VERSION_MINOR_enhance 1
 #define COCOAPODS_VERSION_PATCH_enhance 0
 
+// enhance/Localization
+#define COCOAPODS_POD_AVAILABLE_enhance_Localization
+#define COCOAPODS_VERSION_MAJOR_enhance_Localization 0
+#define COCOAPODS_VERSION_MINOR_enhance_Localization 1
+#define COCOAPODS_VERSION_PATCH_enhance_Localization 0
+
+// enhance/Localization/en
+#define COCOAPODS_POD_AVAILABLE_enhance_Localization_en
+#define COCOAPODS_VERSION_MAJOR_enhance_Localization_en 0
+#define COCOAPODS_VERSION_MINOR_enhance_Localization_en 1
+#define COCOAPODS_VERSION_PATCH_enhance_Localization_en 0
+
