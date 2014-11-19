@@ -170,18 +170,14 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 };
 
 #pragma mark - Presenting and Dismissing
-
-- (void)showImage:(UIImage *)image fromView:(UIView *)fromView {
-    [self showImage:image fromView:fromView inViewController:nil];
-}
-
-- (void)showImage:(UIImage *)image fromView:(UIView *)fromView inViewController:(UIViewController *)parentViewController {
+- (void)showImage:(UIImage *)image fromView:(UIView *)fromView
+{
     self.fromView = fromView;
-    UIView *superview = (parentViewController) ? parentViewController.view : fromView.superview;
-    CGRect fromRect = [superview convertRect:fromView.frame toView:nil];
+    CGRect fromRect = [fromView.superview convertRect:fromView.frame toView:nil];
     
     [self showImage:image fromRect:fromRect];
 }
+
 
 - (void)showImage:(UIImage *)image fromRect:(CGRect)fromRect {
     NSAssert(image, @"Image is required");
@@ -277,19 +273,15 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     }];
 }
 
-- (void)showImageFromURL:(NSURL *)url fromView:(UIView *)fromView {
-    [self showImageFromURL:url fromView:fromView inViewController:nil];
-}
 
-- (void)showImageFromURL:(NSURL *)url fromView:(UIView *)fromView inViewController:(UIViewController *)parentViewController {
+- (void)showImageFromURL:(NSURL *)url fromView:(UIView *)fromView
+{
     self.fromView = fromView;
-    self.targetViewController = parentViewController;
-    
-    UIView *superview = (parentViewController) ? parentViewController.view : fromView.superview;
-    CGRect fromRect = [superview convertRect:fromView.frame toView:nil];
+    CGRect fromRect = [fromView.superview convertRect:fromView.frame toView:nil];
     
     [self showImageFromURL:url fromRect:fromRect];
 }
+
 
 - (void)showImageFromURL:(NSURL *)url fromRect:(CGRect)fromRect {
     self.fromRect = fromRect;
