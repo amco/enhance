@@ -30,6 +30,23 @@
  */
 - (void)enhanceViewControllerDidDisappear:(ENHViewController *)enhanceViewController;
 
+
+/**
+ *  Tells the delegate that the controller registered a tap gesture on the image ivew. This is called when a valid tap gesture starts
+ *
+ *  @param enhanceViewController The instance of the controller recognizing the event
+ *  @param gestureRecognizer     The instance of the tap gesture
+ */
+- (void)enhanceViewController:(ENHViewController *)enhanceViewController didRegisterTap:(UITapGestureRecognizer *)gestureRecognizer;
+
+/**
+ *  Tells the delegate that the controller registered a long press on the image view. This is called for every state of the tap gesture so filter by state accordingly.
+ *
+ *  @param enhanceViewController The instance of the controller recognizing the event
+ *  @param gestureRecognizer     The instance of the long press
+ */
+- (void)enhanceViewController:(ENHViewController *)enhanceViewController didRegisterLongPress:(UILongPressGestureRecognizer *)gestureRecognizer;
+
 /**
  *  Tells the delegate that the remote image needed for presentation has successfully loaded.
  *
@@ -74,6 +91,9 @@
 
 // HTTP header values included in URL requests
 @property (nonatomic, strong) NSDictionary *requestHTTPHeaders;
+
+// Visibility to the state of the user interaction lock
+@property (nonatomic, assign, readonly, getter=isRespondingToTaps) BOOL respondsToTap;
 
 
 /**
@@ -124,6 +144,18 @@
  *  Bundle for enhance resources
  */
 + (NSBundle *)enhanceBundle;
+
+
+/**
+ *  Prevents image views from recognizing tap gestures
+ */
+- (void)preventTaps;
+
+
+/**
+ *  Allows image views to recognize tap gestures
+ */
+- (void)allowTaps;
 
 
 @end

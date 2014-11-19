@@ -7,7 +7,6 @@
 //
 
 
-#import <AssetsLibrary/AssetsLibrary.h>
 #import "ENHViewController.h"
 #import "UIImage+ENHAnimatedGif.h"
 #import "UIImage+BlurEffects.h"
@@ -60,17 +59,11 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 @property (nonatomic, strong) UIView *blurredSnapshotView;
 @property (nonatomic, strong) UIView *snapshotView;
 
-@property (nonatomic, assign, getter=isRespondingToTaps) BOOL respondsToTap;
-@property (nonatomic, strong) UIMenuController *actionMenuController;
-
 
 - (IBAction)handleDismissFromTap:(UITapGestureRecognizer *)gestureRecognizer;
 - (IBAction)handleDoubleTapGesture:(UITapGestureRecognizer *)gestureRecognizer;
 - (IBAction)handleLongPressGesture:(UILongPressGestureRecognizer *)gestureRecognizer;
 - (IBAction)handlePanGesture:(UIPanGestureRecognizer *)gestureRecognizer;
-
-- (void)handleMenuSaveImage;
-- (void)handleMenuCopyImage;
 
 @end
 
@@ -101,7 +94,7 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     vc.shouldShowPhotoActions = NO;
     vc.shouldRotateToDeviceOrientation = YES;
     vc.shouldHideStatusBar = YES;
-    vc.respondsToTap = YES;
+    [vc allowTaps];
     
     return vc;
 }
@@ -488,25 +481,19 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     }
 }
 
-- (void)saveImageToLibrary:(UIImage *)image {
-    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-    [library writeImageToSavedPhotosAlbum:image.CGImage orientation:(ALAssetOrientation)image.imageOrientation completionBlock:^(NSURL *assetURL, NSError *error) {
-        if (error) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:error.localizedDescription
-                                                                message:error.localizedRecoverySuggestion
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedStringFromTable(@"interaction.ok", @"enhance", nil)
-                                                      otherButtonTitles:nil];
-            [alertView show];
-        }
-    }];
-}
-
-- (void)copyImage:(UIImage *)image {
-    [UIPasteboard generalPasteboard].image = image;
-}
 
 #pragma mark - Gesture Methods
+- (void)allowTaps
+{
+    _respondsToTap = YES;
+}
+
+
+- (void)preventTaps
+{
+    _respondsToTap = NO;
+}
+
 
 - (IBAction)handlePanGesture:(UIPanGestureRecognizer *)gestureRecognizer
 {
@@ -606,13 +593,13 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 
 - (IBAction)handleDismissFromTap:(UITapGestureRecognizer *)gestureRecognizer
 {
+    if ([self.delegate respondsToSelector:@selector(enhanceViewController:didRegisterTap:)])
+    {
+        [self.delegate enhanceViewController:self didRegisterTap:gestureRecognizer];
+    }
+    
     if (!self.isRespondingToTaps)
     {
-        self.respondsToTap = YES;
-        if (self.actionMenuController.isMenuVisible)
-        {
-            [self.actionMenuController setMenuVisible:NO animated:YES];
-        }
         return;
     }
     
@@ -620,14 +607,17 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     
     // if we are allowing a tap anywhere to dismiss, check if we allow taps within image bounds to dismiss also
     // otherwise a tap outside image bounds will only be able to dismiss
-    if (self.shouldDismissOnTap) {
-        if (self.shouldDismissOnImageTap || !CGRectContainsPoint(self.imageView.frame, location)) {
+    if (self.shouldDismissOnTap)
+    {
+        if (self.shouldDismissOnImageTap || !CGRectContainsPoint(self.imageView.frame, location))
+        {
             [self dismissToTargetView];
             return;
         }
     }
     
-    if (self.shouldDismissOnImageTap && CGRectContainsPoint(self.imageView.frame, location)) {
+    if (self.shouldDismissOnImageTap && CGRectContainsPoint(self.imageView.frame, location))
+    {
         // we aren't allowing taps outside of image bounds to dismiss, but tap was detected on image view, we can dismiss
         [self dismissToTargetView];
         return;
@@ -638,32 +628,11 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
-        CGRect rect = {
-            .origin = [gestureRecognizer locationInView:gestureRecognizer.view],
-            .size = {1,1}
-        };
-        [self.actionMenuController setTargetRect:rect inView:gestureRecognizer.view];
-        [gestureRecognizer.view becomeFirstResponder];
-        [self.actionMenuController update];
-        [self.actionMenuController setMenuVisible:YES animated:YES];
-        
-        self.respondsToTap = NO;
+        if ([self.delegate respondsToSelector:@selector(enhanceViewController:didRegisterLongPress:)])
+        {
+            [self.delegate enhanceViewController:self didRegisterLongPress:gestureRecognizer];
+        }
     }
-}
-
-
-#pragma mark - Menu methods
-- (void)handleMenuSaveImage
-{
-    self.respondsToTap = YES;
-    [self saveImageToLibrary:self.imageView.image];
-}
-
-
-- (void)handleMenuCopyImage
-{
-    self.respondsToTap = YES;
-    [self copyImage:self.imageView.image];
 }
 
 
@@ -673,20 +642,20 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     return self.imageView;
 }
 
-- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView
+{
     // zoomScale of 1.0 is always our starting point, so anything other than that we disable the pan gesture recognizer
-    if (scrollView.zoomScale <= 1.0f && !scrollView.zooming) {
-        if (self.panRecognizer) {
-            [self.imageView addGestureRecognizer:self.panRecognizer];
-        }
+    if (scrollView.zoomScale <= 1.0f && !scrollView.zooming)
+    {
+        [self.imageView addGestureRecognizer:self.panRecognizer];
         scrollView.scrollEnabled = NO;
     }
-    else {
-        if (self.panRecognizer) {
-            [self.imageView removeGestureRecognizer:self.panRecognizer];
-        }
+    else
+    {
+        [self.imageView removeGestureRecognizer:self.panRecognizer];
         scrollView.scrollEnabled = YES;
     }
+    
     [self centerScrollViewContents];
 }
 
@@ -756,20 +725,6 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 {
     NSString *bundlePath = [[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"enhance_resources.bundle"];
     return [NSBundle bundleWithPath:bundlePath];
-}
-
-
-- (UIMenuController *)actionMenuController
-{
-    if (_actionMenuController) return _actionMenuController;
-    
-    _actionMenuController = [UIMenuController sharedMenuController];
-    UIMenuItem *saveItem = [UIMenuItem.alloc initWithTitle:NSLocalizedStringFromTable(@"button.save.photo", @"enhance", nil) action:@selector(handleMenuSaveImage)];
-    UIMenuItem *copyItem = [UIMenuItem.alloc initWithTitle:NSLocalizedStringFromTable(@"button.copy.photo", @"enhance", nil) action:@selector(handleMenuCopyImage)];
-    
-    _actionMenuController.menuItems = @[saveItem, copyItem];
-    
-    return _actionMenuController;
 }
 
 
