@@ -23,7 +23,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  enhance: 27a5979da001c22fd57b34a98cb41859dc479d37
+  enhance: 99b9febbc071164687ce330b7d7918bce297f4b9
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
   Expecta+Snapshots: 0ec8bd543329a3944f5e5dc2a5cb220c3dde4ab0
   FBSnapshotTestCase: f9f225b5ba11c8d8c09075590490df16314e4d62

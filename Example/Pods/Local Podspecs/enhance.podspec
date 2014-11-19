@@ -12,13 +12,13 @@ Pod::Spec.new do |s|
   s.version          = "0.1.0"
   s.summary          = "A simple image viewer with zooming and UIDynamics for maximum fun"
   s.description      = <<-DESC
-                       An optional longer description of enhance
-
-                       * Markdown format.
-                       * Don't worry about the indent, we strip it!
+                       * Got some images?
+                       * This shows them in a pinch-zoomable view inside of the view controller of your choice
+                       * Fancy UIDynamics lets you swipe them out of the way or ease it back in place
+                       * Simple, direct, not trying to do everything under the sun
                        DESC
   s.homepage         = "https://github.com/amco/enhance"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+  s.screenshots     = "http://i.imgur.com/mfQxIyN.jpg", "http://i.imgur.com/vlpMYFj.png", "http://i.imgur.com/98J3wNl.jpg", "http://i.imgur.com/r7RgeGP.jpg"
   s.license          = 'MIT'
   s.author           = { "Adam Yanalunas" => "adamy@amcoonline.net" }
   s.source           = { :git => "https://github.com/amco/enhance.git", :tag => s.version.to_s }

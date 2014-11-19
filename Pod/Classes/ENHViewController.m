@@ -11,6 +11,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "ENHViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIView+SnapshotImage.h"
 
 
 static const CGFloat __overlayAlpha = 0.6f;						// opacity of the black overlay displayed below the focused image
@@ -27,10 +28,6 @@ static const CGFloat __backgroundScale = 0.9f;					// defines how much the backg
 static const CGFloat __blurRadius = 2.0f;						// defines how much the background view is blurred
 static const CGFloat __blurSaturationDeltaMask = 0.8f;
 static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint the background view
-
-@interface UIView (URBMediaFocusViewController)
-- (UIImage *)urb_snapshotImageWithScale:(CGFloat)scale;
-@end
 
 /**
  Pulled from Apple's UIImage+ImageEffects category, but renamed to avoid potential selector name conflicts.
@@ -426,7 +423,7 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     containerView.backgroundColor = [UIColor blackColor];
     
     // add snapshot of window to the container
-    UIImage *windowSnapshot = [self.keyWindow urb_snapshotImageWithScale:[UIScreen mainScreen].scale];
+    UIImage *windowSnapshot = [self.keyWindow enh_snapshotImageWithScale:[UIScreen mainScreen].scale];
     UIImageView *windowSnapshotView = [[UIImageView alloc] initWithImage:windowSnapshot];
     windowSnapshotView.center = containerView.center;
     [containerView addSubview:windowSnapshotView];
@@ -435,7 +432,7 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     UIImageView *snapshotView;
     // only add blurred view if radius is above 0
     if (self.shouldBlurBackground && __blurRadius) {
-        UIImage *snapshot = [containerView urb_snapshotImageWithScale:[UIScreen mainScreen].scale];
+        UIImage *snapshot = [containerView enh_snapshotImageWithScale:[UIScreen mainScreen].scale];
         snapshot = [snapshot urb_applyBlurWithRadius:__blurRadius
                                            tintColor:[UIColor colorWithWhite:0.0f alpha:__blurTintColorAlpha]
                                saturationDeltaFactor:__blurSaturationDeltaMask
@@ -818,26 +815,6 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     return _actionMenuController;
 }
 
-
-@end
-
-
-@implementation UIView (URBMediaFocusViewController)
-
-- (UIImage *)urb_snapshotImageWithScale:(CGFloat)scale {
-    UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, scale);
-    if ([self respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]) {
-        [self drawViewHierarchyInRect:self.bounds afterScreenUpdates:YES];
-    }
-    else {
-        [self.layer renderInContext:UIGraphicsGetCurrentContext()];
-    }
-    
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return image;
-}
 
 @end
 
