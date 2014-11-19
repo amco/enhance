@@ -242,32 +242,17 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     _lastPinchScale = 1.0f;
     _hasLaidOut = YES;
     
-    if (self.targetViewController) {
-        [self willMoveToParentViewController:self.targetViewController];
-        if ([UIView instancesRespondToSelector:@selector(setTintAdjustmentMode:)]) {
-            self.targetViewController.view.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
-            [self.targetViewController.view tintColorDidChange];
-        }
-        [self.targetViewController addChildViewController:self];
-        [self.targetViewController.view addSubview:self.view];
-        
-        if (self.snapshotView) {
-            [self.targetViewController.view insertSubview:self.snapshotView belowSubview:self.view];
-            [self.targetViewController.view insertSubview:self.blurredSnapshotView aboveSubview:self.snapshotView];
-        }
+    [self willMoveToParentViewController:self.targetViewController];
+    if ([UIView instancesRespondToSelector:@selector(setTintAdjustmentMode:)]) {
+        self.targetViewController.view.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
+        [self.targetViewController.view tintColorDidChange];
     }
-    else {
-        // add this view to the main window if no targetViewController was set
-        if ([UIView instancesRespondToSelector:@selector(setTintAdjustmentMode:)]) {
-            self.keyWindow.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
-            [self.keyWindow tintColorDidChange];
-        }
-        [self.keyWindow addSubview:self.view];
-        
-        if (self.snapshotView) {
-            [self.keyWindow insertSubview:self.snapshotView belowSubview:self.view];
-            [self.keyWindow insertSubview:self.blurredSnapshotView aboveSubview:self.snapshotView];
-        }
+    [self.targetViewController addChildViewController:self];
+    [self.targetViewController.view addSubview:self.view];
+    
+    if (self.snapshotView) {
+        [self.targetViewController.view insertSubview:self.snapshotView belowSubview:self.view];
+        [self.targetViewController.view insertSubview:self.blurredSnapshotView aboveSubview:self.snapshotView];
     }
     
     [UIView animateWithDuration:__animationDuration delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
@@ -284,9 +269,7 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
         }
         
     } completion:^(BOOL finished) {
-        if (self.targetViewController) {
-            [self didMoveToParentViewController:self.targetViewController];
-        }
+        [self didMoveToParentViewController:self.targetViewController];
         
         if ([self.delegate respondsToSelector:@selector(enhanceViewControllerDidAppear:)]) {
             [self.delegate enhanceViewControllerDidAppear:self];
@@ -492,20 +475,13 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     _hasLaidOut = NO;
     [self.view removeFromSuperview];
     
-    if (self.targetViewController) {
-        if ([UIView instancesRespondToSelector:@selector(setTintAdjustmentMode:)]) {
-            self.targetViewController.view.tintAdjustmentMode = UIViewTintAdjustmentModeAutomatic;
-            [self.targetViewController.view tintColorDidChange];
-        }
-        [self willMoveToParentViewController:nil];
-        [self removeFromParentViewController];
+    if ([UIView instancesRespondToSelector:@selector(setTintAdjustmentMode:)])
+    {
+        self.targetViewController.view.tintAdjustmentMode = UIViewTintAdjustmentModeAutomatic;
+        [self.targetViewController.view tintColorDidChange];
     }
-    else {
-        if ([UIWindow instancesRespondToSelector:@selector(setTintAdjustmentMode:)]) {
-            self.keyWindow.tintAdjustmentMode = UIViewTintAdjustmentModeAutomatic;
-            [self.keyWindow tintColorDidChange];
-        }
-    }
+    [self willMoveToParentViewController:nil];
+    [self removeFromParentViewController];
     
     if (self.animator) {
         [self.animator removeAllBehaviors];
