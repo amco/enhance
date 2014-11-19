@@ -5,13 +5,15 @@
 [![License](https://img.shields.io/cocoapods/l/enhance.svg?style=flat)](http://cocoadocs.org/docsets/enhance)
 [![Platform](https://img.shields.io/cocoapods/p/enhance.svg?style=flat)](http://cocoadocs.org/docsets/enhance)
 
-## Usage
+enhances is a simple image viewer with zooming and UIDynamics for maximum fun.
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+![Sample awesomeness happening](http://i.imgur.com/vlpMYFj.png)
 
 ## Requirements
 
 * iOS 7 and up
+* Super awesome images you want people to see enhanced
+* A good attitude
 
 ## Installation
 
@@ -19,6 +21,19 @@ enhance is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
     pod "enhance"
+
+Or try it out by doing this (don't worry, it goes to /tmp and disappears when you no longer have love in your heart to give to enhance)
+
+    pod try enhance
+
+
+## Contribution
+
+* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
+* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
+* Fork the project and submit a pull request from a feature or bugfix branch.
+* Please include tests. This is important so we don't break your changes unintentionally in a future version.
+* Please don't modify the podspec, version, or changelog. If you do change these files, please isolate a separate commit so we can cherry-pick around it.
 
 ## Author
 
