@@ -81,7 +81,6 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     CGFloat _maxScale;
     CGFloat _lastPinchScale;
     CGFloat _lastZoomScale;
-    UIInterfaceOrientation _currentOrientation;
     BOOL _hasLaidOut;
     BOOL _unhideStatusBarOnDismiss;
 }
@@ -114,11 +113,13 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 }
 
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     [self setup];
 }
+
 
 - (void)setup
 {
@@ -176,7 +177,6 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 
 - (void)showImage:(UIImage *)image fromView:(UIView *)fromView inViewController:(UIViewController *)parentViewController {
     self.fromView = fromView;
-    //self.targetViewController = parentViewController;
     UIView *superview = (parentViewController) ? parentViewController.view : fromView.superview;
     CGRect fromRect = [superview convertRect:fromView.frame toView:nil];
     
@@ -190,7 +190,6 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     CGRect bounds = self.keyWindow.bounds;
     self.view.frame = bounds;
     
-    _currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
     self.fromRect = fromRect;
     
     self.imageView.transform = CGAffineTransformIdentity;
@@ -285,7 +284,6 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
         }
         
     } completion:^(BOOL finished) {
-        //[self.imageView addGestureRecognizer:self.pinchRecognizer];
         if (self.targetViewController) {
             [self didMoveToParentViewController:self.targetViewController];
         }
@@ -384,7 +382,6 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
         else {
             self.imageView.frame = [self.view convertRect:self.fromView.frame fromView:nil];
         }
-        //self.imageView.alpha = 0.0f;
         self.backgroundView.alpha = 0.0f;
     } completion:^(BOOL finished) {
         [self cleanup];
@@ -555,7 +552,6 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
         
         UIOffset centerOffset = UIOffsetMake(boxLocation.x - CGRectGetMidX(self.imageView.bounds), boxLocation.y - CGRectGetMidY(self.imageView.bounds));
         self.panAttachmentBehavior = [[UIAttachmentBehavior alloc] initWithItem:self.imageView offsetFromCenter:centerOffset attachedToAnchor:location];
-        //self.panAttachmentBehavior.frequency = 0.0f;
         [self.animator addBehavior:self.panAttachmentBehavior];
         [self.animator addBehavior:self.itemBehavior];
         [self scaleImageForDynamics];
