@@ -5,7 +5,9 @@
 [![License](https://img.shields.io/cocoapods/l/enhance.svg?style=flat)](http://cocoadocs.org/docsets/enhance)
 [![Platform](https://img.shields.io/cocoapods/p/enhance.svg?style=flat)](http://cocoadocs.org/docsets/enhance)
 
-enhances is a simple image viewer with zooming and UIDynamics for maximum fun.
+enhance is a simple image viewer with zooming and UIDynamics for maximum fun.
+
+Its roots come from the very functional [URBMediaFocusViewController](https://github.com/u10int/URBMediaFocusViewController) pod but I'm in the process of ruthlessly hacking things apart, fixing bugs, slimming down the API and focusing its goals. Seemed better to start a new pod instead of inundating the original repo with unsolicited PRs.
 
 ![Sample awesomeness happening](http://i.imgur.com/vlpMYFj.png)
 
