@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
                        * Simple, direct, not trying to do everything under the sun
                        DESC
   s.homepage         = "https://github.com/amco/enhance"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+  s.screenshots     = "http://i.imgur.com/mfQxIyN.jpg", "http://i.imgur.com/vlpMYFj.png", "http://i.imgur.com/98J3wNl.jpg", "http://i.imgur.com/r7RgeGP.jpg"
   s.license          = 'MIT'
   s.author           = { "Adam Yanalunas" => "adamy@amcoonline.net" }
   s.source           = { :git => "https://github.com/amco/enhance.git", :tag => s.version.to_s }
