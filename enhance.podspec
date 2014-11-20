@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "enhance"
-  s.version          = "0.1.0"
+  s.version          = "0.2.0"
   s.summary          = "A simple image viewer with zooming and UIDynamics for maximum fun"
   s.description      = <<-DESC
                        * Got some images?
