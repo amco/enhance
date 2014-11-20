@@ -678,28 +678,34 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     [self.urlData appendData:data];
 }
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
     [self.loadingView stopAnimating];
     [self.loadingView removeFromSuperview];
     
-    if (self.urlData) {
+    if (self.urlData)
+    {
         NSString *urlPath = connection.currentRequest.URL.absoluteString;
         UIImage *image;
         
         // determine if the loaded url is an animated GIF, and setup accordingly if so
-        if ([[urlPath substringFromIndex:[urlPath length] - 3] isEqualToString:@"gif"]) {
+        if ([[urlPath substringFromIndex:[urlPath length] - 3] isEqualToString:@"gif"])
+        {
             self.imageView.image = [UIImage imageWithData:self.urlData];
             image = [UIImage enh_animatedImageWithAnimatedGIFData:self.urlData];
         }
-        else {
+        else
+        {
             image = [UIImage imageWithData:self.urlData];
         }
         
         // sometimes the server can return bad or corrupt image data which will result in a crash if we don't throw an error here
-        if (!image) {
-            NSString *errorDescription = [NSString stringWithFormat:@"Bad or corrupt image data for %@", urlPath];
-            NSError *error = [NSError errorWithDomain:@"com.urban10.URBMediaFocusViewController" code:100 userInfo:@{NSLocalizedDescriptionKey: errorDescription}];
-            if ([self.delegate respondsToSelector:@selector(enhanceViewController:didFailLoadingImageWithError:)]) {
+        if (!image)
+        {
+            NSString *errorDescription = [NSString localizedStringWithFormat:NSLocalizedString(@"enhance.image.load.error", nil), urlPath];
+            NSError *error = [NSError errorWithDomain:@"com.amco.ENHViewController" code:ENHImageLoadFailed userInfo:@{NSLocalizedDescriptionKey: errorDescription}];
+            if ([self.delegate respondsToSelector:@selector(enhanceViewController:didFailLoadingImageWithError:)])
+            {
                 [self.delegate enhanceViewController:self didFailLoadingImageWithError:error];
             }
             return;
@@ -707,7 +713,8 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
         
         [self showImage:image fromRect:self.fromRect];
         
-        if ([self.delegate respondsToSelector:@selector(enhanceViewController:didFinishLoadingImage:)]) {
+        if ([self.delegate respondsToSelector:@selector(enhanceViewController:didFinishLoadingImage:)])
+        {
             [self.delegate enhanceViewController:self didFinishLoadingImage:image];
         }
     }

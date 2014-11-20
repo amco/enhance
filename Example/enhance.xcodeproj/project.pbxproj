@@ -22,6 +22,7 @@
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
+		66603E9E1A1E9EF200B54040 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 66603E9D1A1E9EF200B54040 /* Localizable.strings */; };
 		66F7C2FD1A12E380002AEBA3 /* ENHCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66F7C2FC1A12E380002AEBA3 /* ENHCollectionViewController.m */; };
 		66F7C3031A12E6D6002AEBA3 /* dog.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 66F7C2FF1A12E6D6002AEBA3 /* dog.jpg */; };
 		66F7C3041A12E6D6002AEBA3 /* computer.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 66F7C3001A12E6D6002AEBA3 /* computer.jpg */; };
@@ -65,6 +66,7 @@
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
+		66603E9D1A1E9EF200B54040 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		66F7C2FB1A12E380002AEBA3 /* ENHCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENHCollectionViewController.h; sourceTree = "<group>"; };
 		66F7C2FC1A12E380002AEBA3 /* ENHCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENHCollectionViewController.m; sourceTree = "<group>"; };
 		66F7C2FF1A12E6D6002AEBA3 /* dog.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dog.jpg; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				6003F596195388D20070C39A /* InfoPlist.strings */,
 				6003F599195388D20070C39A /* main.m */,
 				6003F59B195388D20070C39A /* enhance-Prefix.pch */,
+				66603E9D1A1E9EF200B54040 /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -305,6 +308,7 @@
 				66F7C3041A12E6D6002AEBA3 /* computer.jpg in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				66F7C3061A12E6D6002AEBA3 /* enhance.jpg in Resources */,
+				66603E9E1A1E9EF200B54040 /* Localizable.strings in Resources */,
 				6003F5A1195388D20070C39A /* Main_iPhone.storyboard in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 				66F7C3051A12E6D6002AEBA3 /* cat.jpg in Resources */,

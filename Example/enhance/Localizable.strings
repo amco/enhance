@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  enhance
+
+  Created by Adam Yanalunas on 11/20/14.
+  Copyright (c) 2014 Adam Yanalunas. All rights reserved.
+*/
+
+"interaction.ok" = "OK";
+
+"button.save.photo" = "Save Photo";
+"button.copy.photo" = "Copy Photo";

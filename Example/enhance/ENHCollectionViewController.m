@@ -113,7 +113,7 @@
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:error.localizedDescription
                                                                 message:error.localizedRecoverySuggestion
                                                                delegate:nil
-                                                      cancelButtonTitle:NSLocalizedStringFromTable(@"interaction.ok", @"enhance", nil)
+                                                      cancelButtonTitle:NSLocalizedString(@"interaction.ok", nil)
                                                       otherButtonTitles:nil];
             [alertView show];
         }
@@ -165,8 +165,8 @@
     if (_actionMenuController) return _actionMenuController;
     
     _actionMenuController = [UIMenuController sharedMenuController];
-    UIMenuItem *saveItem = [UIMenuItem.alloc initWithTitle:NSLocalizedStringFromTable(@"button.save.photo", @"enhance", nil) action:@selector(handleMenuSaveImage)];
-    UIMenuItem *copyItem = [UIMenuItem.alloc initWithTitle:NSLocalizedStringFromTable(@"button.copy.photo", @"enhance", nil) action:@selector(handleMenuCopyImage)];
+    UIMenuItem *saveItem = [UIMenuItem.alloc initWithTitle:NSLocalizedString(@"button.save.photo", nil) action:@selector(handleMenuSaveImage)];
+    UIMenuItem *copyItem = [UIMenuItem.alloc initWithTitle:NSLocalizedString(@"button.copy.photo", nil) action:@selector(handleMenuCopyImage)];
     
     _actionMenuController.menuItems = @[saveItem, copyItem];
     

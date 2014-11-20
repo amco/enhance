@@ -10,6 +10,11 @@
 #import <UIKit/UIKit.h>
 
 
+NS_OPTIONS(NSInteger, ENHErrorCode) {
+    ENHImageLoadFailed
+};
+
+
 @class ENHViewController;
 
 
