@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.1](https://github.com/amco/enhance/releases/tag/0.2.1)
+
+* Made `dismiss:` in [`ENHViewController.h`](https://github.com/amco/enhance/blob/653b817edd0d4ab623455dd503a52d3d4249062e/Pod/Classes/ENHViewController.h#L145) public
+
 ## [0.2.0](https://github.com/amco/enhance/releases/tag/0.2.0)
 
 * Removed fallback to present in the key `UIWindow`. Must now initialize `enhance` with a view controller which will be used during presentation. ([64247d985](https://github.com/amco/enhance/commit/64247d9855448d39274651f7ea42863ba8b1bf56))
