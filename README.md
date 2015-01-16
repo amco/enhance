@@ -37,9 +37,10 @@ Or try it out by doing this (don't worry, it goes to /tmp and disappears when yo
 * Please include tests. This is important so we don't break your changes unintentionally in a future version.
 * Please don't modify the podspec, version, or changelog. If you do change these files, please isolate a separate commit so we can cherry-pick around it.
 
-## Author
+## Authors
 
-Adam Yanalunas, adamy@amcoonline.net
+* [Adam Yanalunas](https://github.com/adamyanalunas), adamy@amcoonline.net
+* [Sergey Kuryanov](https://github.com/SergeyKuryanov)
 
 ## License
 
