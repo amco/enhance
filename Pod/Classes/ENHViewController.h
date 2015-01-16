@@ -138,6 +138,11 @@ NS_OPTIONS(NSInteger, ENHErrorCode) {
  */
 - (void)showImageFromURL:(NSURL *)url fromRect:(CGRect)fromRect;
 
+/**
+ *  Dismiss view
+ *  @param animated Dismiss animated or not
+ */
+- (void)dismiss:(BOOL)animated;
 
 /**
  *  Stop downloading the image (useful when closing a window while the image is downloading)
