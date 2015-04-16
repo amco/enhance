@@ -81,11 +81,9 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 
 + (instancetype)enhanceUsingViewController:(UIViewController *)viewController
 {
-    NSBundle *bundle = [self.class enhanceBundle];
-    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"enhance" bundle:bundle];
-    ENHViewController *vc = [sb instantiateInitialViewController];
-    if (!vc) return nil;
+    ENHViewController *vc = [ENHViewController.alloc init];
     
+    //Configuration setup
     vc.targetViewController = viewController;
     vc.shouldBlurBackground = YES;
     vc.parallaxEnabled = YES;
@@ -114,10 +112,93 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 }
 
 
+- (void)setupGestures
+{
+    self.tapRecognizer = [UITapGestureRecognizer.alloc initWithTarget:self action:@selector(handleDismissFromTap:)];
+    self.tapRecognizer.numberOfTapsRequired = 1;
+    self.tapRecognizer.numberOfTouchesRequired = 1;
+    self.tapRecognizer.delegate = self;
+    
+    self.doubleTapRecognizer = [UITapGestureRecognizer.alloc initWithTarget:self action:@selector(handleDoubleTapGesture:)];
+    self.doubleTapRecognizer.numberOfTapsRequired = 2;
+    self.doubleTapRecognizer.numberOfTouchesRequired = 1;
+    self.doubleTapRecognizer.delegate = self;
+    
+    self.photoLongPressRecognizer = [UILongPressGestureRecognizer.alloc initWithTarget:self action:@selector(handleLongPressGesture:)];
+    self.photoLongPressRecognizer.numberOfTapsRequired = 0;
+    self.photoLongPressRecognizer.numberOfTouchesRequired = 1;
+    self.photoLongPressRecognizer.minimumPressDuration = 0.5;
+    self.photoLongPressRecognizer.allowableMovement = 10;
+    self.photoLongPressRecognizer.delegate = self;
+    
+    self.panRecognizer = [UIPanGestureRecognizer.alloc initWithTarget:self action:@selector(handlePanGesture:)];
+    self.panRecognizer.minimumNumberOfTouches = 1;
+    self.panRecognizer.cancelsTouchesInView = YES;
+    self.panRecognizer.delaysTouchesBegan = NO;
+    self.panRecognizer.delaysTouchesEnded = YES;
+    self.panRecognizer.enabled = YES;
+    self.panRecognizer.delegate = self;
+}
+
+
+- (void)setupHierarchy
+{
+    //Hierarchy setup
+    self.backgroundView = [UIView.alloc initWithFrame:CGRectZero];
+    self.backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.backgroundView.backgroundColor = UIColor.whiteColor;
+    self.backgroundView.opaque = YES;
+    
+    self.scrollView = [UIScrollView.alloc initWithFrame:self.view.bounds];
+    self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.scrollView.scrollEnabled = NO;
+    self.scrollView.showsHorizontalScrollIndicator = NO;
+    self.scrollView.showsVerticalScrollIndicator = NO;
+    self.scrollView.bounces = YES;
+    self.scrollView.delegate = self;
+    
+    self.imageView = [UIImageView.alloc initWithFrame:CGRectZero];
+    self.imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.imageView.userInteractionEnabled = YES;
+    self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    self.imageView.alpha = 0;
+    self.imageView.autoresizesSubviews = YES;
+    self.imageView.layer.allowsEdgeAntialiasing = YES;
+    
+    [self.view addSubview:self.backgroundView];
+    [self.scrollView addSubview:self.imageView];
+    [self.view addSubview:self.scrollView];
+    
+    NSDictionary *viewDict = @{
+                               @"backgroundView": self.backgroundView,
+                               @"imageView": self.imageView,
+                               @"scrollView": self.scrollView
+                               };
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[backgroundView]|" options:0 metrics:nil views:viewDict]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[backgroundView]|" options:0 metrics:nil views:viewDict]];
+    
+    [self.scrollView addConstraint:[NSLayoutConstraint constraintWithItem:self.imageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeWidth multiplier:1 constant:0]];
+    [self.scrollView addConstraint:[NSLayoutConstraint constraintWithItem:self.imageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeHeight multiplier:1 constant:0]];
+    [self.scrollView addConstraint:[NSLayoutConstraint constraintWithItem:self.imageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
+    [self.scrollView addConstraint:[NSLayoutConstraint constraintWithItem:self.imageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeCenterY multiplier:1 constant:0]];
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[scrollView]|" options:0 metrics:nil views:viewDict]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[scrollView]|" options:0 metrics:nil views:viewDict]];
+    
+    [self.backgroundView setNeedsLayout];
+    [self.scrollView setNeedsLayout];
+    [self.imageView setNeedsLayout];
+    [self.view setNeedsLayout];
+}
+
+
 - (void)setup
 {
     _hasLaidOut = NO;
     _unhideStatusBarOnDismiss = YES;
+    
+    [self setupGestures];
+    [self setupHierarchy];
     
     self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:__overlayAlpha];
     
