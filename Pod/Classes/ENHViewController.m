@@ -81,11 +81,9 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 
 + (instancetype)enhanceUsingViewController:(UIViewController *)viewController
 {
-    NSBundle *bundle = [self.class enhanceBundle];
-    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"enhance" bundle:bundle];
-    ENHViewController *vc = [sb instantiateInitialViewController];
-    if (!vc) return nil;
+    ENHViewController *vc = [ENHViewController.alloc init];
     
+    //Configuration setup
     vc.targetViewController = viewController;
     vc.shouldBlurBackground = YES;
     vc.parallaxEnabled = YES;
@@ -114,10 +112,93 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 }
 
 
+- (void)setupGestures
+{
+    self.tapRecognizer = [UITapGestureRecognizer.alloc initWithTarget:self action:@selector(handleDismissFromTap:)];
+    self.tapRecognizer.numberOfTapsRequired = 1;
+    self.tapRecognizer.numberOfTouchesRequired = 1;
+    self.tapRecognizer.delegate = self;
+    
+    self.doubleTapRecognizer = [UITapGestureRecognizer.alloc initWithTarget:self action:@selector(handleDoubleTapGesture:)];
+    self.doubleTapRecognizer.numberOfTapsRequired = 2;
+    self.doubleTapRecognizer.numberOfTouchesRequired = 1;
+    self.doubleTapRecognizer.delegate = self;
+    
+    self.photoLongPressRecognizer = [UILongPressGestureRecognizer.alloc initWithTarget:self action:@selector(handleLongPressGesture:)];
+    self.photoLongPressRecognizer.numberOfTapsRequired = 0;
+    self.photoLongPressRecognizer.numberOfTouchesRequired = 1;
+    self.photoLongPressRecognizer.minimumPressDuration = 0.5;
+    self.photoLongPressRecognizer.allowableMovement = 10;
+    self.photoLongPressRecognizer.delegate = self;
+    
+    self.panRecognizer = [UIPanGestureRecognizer.alloc initWithTarget:self action:@selector(handlePanGesture:)];
+    self.panRecognizer.minimumNumberOfTouches = 1;
+    self.panRecognizer.cancelsTouchesInView = YES;
+    self.panRecognizer.delaysTouchesBegan = NO;
+    self.panRecognizer.delaysTouchesEnded = YES;
+    self.panRecognizer.enabled = YES;
+    self.panRecognizer.delegate = self;
+}
+
+
+- (void)setupHierarchy
+{
+    //Hierarchy setup
+    self.backgroundView = [UIView.alloc initWithFrame:CGRectZero];
+    self.backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.backgroundView.backgroundColor = UIColor.whiteColor;
+    self.backgroundView.opaque = YES;
+    
+    self.scrollView = [UIScrollView.alloc initWithFrame:self.view.bounds];
+    self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.scrollView.scrollEnabled = NO;
+    self.scrollView.showsHorizontalScrollIndicator = NO;
+    self.scrollView.showsVerticalScrollIndicator = NO;
+    self.scrollView.bounces = YES;
+    self.scrollView.delegate = self;
+    
+    self.imageView = [UIImageView.alloc initWithFrame:CGRectZero];
+    self.imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.imageView.userInteractionEnabled = YES;
+    self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    self.imageView.alpha = 0;
+    self.imageView.autoresizesSubviews = YES;
+    self.imageView.layer.allowsEdgeAntialiasing = YES;
+    
+    [self.view addSubview:self.backgroundView];
+    [self.scrollView addSubview:self.imageView];
+    [self.view addSubview:self.scrollView];
+    
+    NSDictionary *viewDict = @{
+                               @"backgroundView": self.backgroundView,
+                               @"imageView": self.imageView,
+                               @"scrollView": self.scrollView
+                               };
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[backgroundView]|" options:0 metrics:nil views:viewDict]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[backgroundView]|" options:0 metrics:nil views:viewDict]];
+    
+    [self.scrollView addConstraint:[NSLayoutConstraint constraintWithItem:self.imageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeWidth multiplier:1 constant:0]];
+    [self.scrollView addConstraint:[NSLayoutConstraint constraintWithItem:self.imageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeHeight multiplier:1 constant:0]];
+    [self.scrollView addConstraint:[NSLayoutConstraint constraintWithItem:self.imageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
+    [self.scrollView addConstraint:[NSLayoutConstraint constraintWithItem:self.imageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeCenterY multiplier:1 constant:0]];
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[scrollView]|" options:0 metrics:nil views:viewDict]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[scrollView]|" options:0 metrics:nil views:viewDict]];
+    
+    [self.backgroundView setNeedsLayout];
+    [self.scrollView setNeedsLayout];
+    [self.imageView setNeedsLayout];
+    [self.view setNeedsLayout];
+}
+
+
 - (void)setup
 {
     _hasLaidOut = NO;
     _unhideStatusBarOnDismiss = YES;
+    
+    [self setupGestures];
+    [self setupHierarchy];
     
     self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:__overlayAlpha];
     
@@ -538,9 +619,9 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
             }
             
             // angle (θ) is the angle between the push vector (V) and vector component parallel to radius, so it should always be positive
-            CGFloat angle = fabsf(fabsf(velocityAngle) - fabsf(locationAngle));
+            CGFloat angle = fabs(fabs(velocityAngle) - fabs(locationAngle));
             // angular velocity formula: w = (abs(V) * sin(θ)) / abs(r)
-            CGFloat angularVelocity = fabsf((fabsf(pushVelocity) * sinf(angle)) / fabsf(radius));
+            CGFloat angularVelocity = fabs((fabs(pushVelocity) * sinf(angle)) / fabs(radius));
             
             // rotation direction is dependent upon which corner was pushed relative to the center of the view
             // when velocity.y is positive, pushes to the right of center rotate clockwise, left is counterclockwise
@@ -551,8 +632,8 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
             // amount of angular velocity should be relative to how close to the edge of the view the force originated
             // angular velocity is reduced the closer to the center the force is applied
             // for angular velocity: positive = clockwise, negative = counterclockwise
-            CGFloat xRatioFromCenter = fabsf(offsetFromCenter.horizontal) / (CGRectGetWidth(self.imageView.frame) / 2.0f);
-            CGFloat yRatioFromCetner = fabsf(offsetFromCenter.vertical) / (CGRectGetHeight(self.imageView.frame) / 2.0f);
+            CGFloat xRatioFromCenter = fabs(offsetFromCenter.horizontal) / (CGRectGetWidth(self.imageView.frame) / 2.0f);
+            CGFloat yRatioFromCetner = fabs(offsetFromCenter.vertical) / (CGRectGetHeight(self.imageView.frame) / 2.0f);
             
             // apply device scale to angular velocity
             angularVelocity *= deviceAngularScale;
