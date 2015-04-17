@@ -13,7 +13,6 @@
 #import "UIView+SnapshotImage.h"
 
 
-static const CGFloat __overlayAlpha = 0.6f;						// opacity of the black overlay displayed below the focused image
 static const CGFloat __animationDuration = 0.18f;				// the base duration for present/dismiss animations (except physics-related ones)
 static const CGFloat __maximumDismissDelay = 0.5f;				// maximum time of delay (in seconds) between when image view is push out and dismissal animations begin
 static const CGFloat __resistance = 0.0f;						// linear resistance applied to the image’s dynamic item behavior
@@ -92,6 +91,7 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     vc.shouldShowPhotoActions = NO;
     vc.shouldRotateToDeviceOrientation = YES;
     vc.shouldHideStatusBar = YES;
+    vc.overlayColor = [UIColor colorWithWhite:0 alpha:0.6];
     [vc allowTaps];
     
     return vc;
@@ -200,8 +200,6 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     [self setupGestures];
     [self setupHierarchy];
     
-    self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:__overlayAlpha];
-    
     self.imageView.layer.allowsEdgeAntialiasing = YES;
     
     [self.imageView addGestureRecognizer:self.doubleTapRecognizer];
@@ -265,6 +263,8 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
     self.imageView.transform = CGAffineTransformIdentity;
     self.imageView.image = image;
     self.imageView.alpha = 0.2;
+    
+    self.backgroundView.backgroundColor = self.overlayColor;
     
     // create snapshot of background if parallax is enabled
     if (self.parallaxEnabled || self.shouldBlurBackground) {

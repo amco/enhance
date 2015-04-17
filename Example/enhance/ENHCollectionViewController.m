@@ -31,6 +31,7 @@
 {
     UIImage *img = self.images[indexPath.item];
     UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
+    self.enhancer.backgroundColor = self.overlayColors[indexPath.item];
     [self.enhancer showImage:img fromView:cell];
 }
 
@@ -157,6 +158,21 @@
                 ];
     
     return _images;
+}
+
+
+- (NSArray *)overlayColors
+{
+    if (_overlayColors) return _overlayColors;
+    
+    _overlayColors = @[
+                          [UIColor colorWithWhite:0 alpha:0.6],
+                          [UIColor colorWithWhite:0 alpha:1],
+                          [UIColor colorWithWhite:1 alpha:1],
+                          [UIColor colorWithRed:200/255. green:10/255. blue:20/255. alpha:0.4]
+                          ];
+    
+    return _overlayColors;
 }
 
 
