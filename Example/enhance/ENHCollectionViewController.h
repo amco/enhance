@@ -20,6 +20,7 @@ typedef void(^ENHMenuItemActionBlock)(void);
 @property (nonatomic, copy) ENHMenuItemActionBlock copyImageAction;
 @property (nonatomic, strong) ENHViewController *enhancer;
 @property (nonatomic, strong) NSArray *images;
+@property (nonatomic, copy) NSArray *overlayColors;
 @property (nonatomic, copy) ENHMenuItemActionBlock saveImageAction;
 
 - (void)copyImage:(UIImage *)image;

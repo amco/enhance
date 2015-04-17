@@ -73,6 +73,8 @@ NS_OPTIONS(NSInteger, ENHErrorCode) {
 
 @interface ENHViewController : UIViewController <UIDynamicAnimatorDelegate, UIGestureRecognizerDelegate, NSURLConnectionDataDelegate>
 
+// Color of overlay shown behind image. Defaults to 60% opaque black
+@property (nonatomic, strong) UIColor *overlayColor;
 
 @property (nonatomic, assign) BOOL shouldBlurBackground;
 @property (nonatomic, assign) BOOL parallaxEnabled;
