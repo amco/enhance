@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.3.1](https://github.com/amco/enhance/releases/tag/0.3.1)
+
+* Allow color of overlay layer between background and image to be customized.
+
 ## [0.3.0](https://github.com/amco/enhance/releases/tag/0.3.0)
 
 * Removed the storyboard that holds the image and scroll view. It was nice to keep view code in the storyboard but it caused more pain than was worth supporting. CocoaPods `0.36.x` broke something about how I handled resources and getting them into Pods. C'est la vie!
