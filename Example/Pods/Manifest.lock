@@ -1,32 +1,34 @@
 PODS:
-  - enhance (0.1.0):
-    - enhance/Localization
-  - enhance/Localization (0.1.0):
-    - enhance/Localization/en
-  - enhance/Localization/en (0.1.0)
-  - Expecta (0.3.1)
+  - enhance (0.3.1):
+    - enhance/Localization (= 0.3.1)
+  - enhance/Localization (0.3.1):
+    - enhance/Localization/en (= 0.3.1)
+  - enhance/Localization/en (0.3.1)
+  - Expecta (1.0.5)
   - Expecta+Snapshots (1.3.0):
     - Expecta
     - FBSnapshotTestCase
   - FBSnapshotTestCase (1.4)
-  - Specta (0.2.1)
+  - Specta (1.0.5)
 
 DEPENDENCIES:
   - enhance (from `../`)
-  - Expecta
+  - Expecta (~> 1.0)
   - Expecta+Snapshots
   - FBSnapshotTestCase
-  - Specta (~> 0.2.1)
+  - Specta (~> 1.0)
 
 EXTERNAL SOURCES:
   enhance:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
-  enhance: 99b9febbc071164687ce330b7d7918bce297f4b9
-  Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
-  Expecta+Snapshots: 0ec8bd543329a3944f5e5dc2a5cb220c3dde4ab0
-  FBSnapshotTestCase: f9f225b5ba11c8d8c09075590490df16314e4d62
-  Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
+  enhance: 2ffe0dbce1e20db3a28ed72b649a46fbe5b697f4
+  Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
+  Expecta+Snapshots: 07c3838422fe9107002a8e395739fa60c0d60dff
+  FBSnapshotTestCase: 892508495a69e8703bab36c9da7674ff740d41db
+  Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
-COCOAPODS: 0.34.2
+PODFILE CHECKSUM: b23b5309d41e486b30fe3f847795c9c2d4bb4866
+
+COCOAPODS: 1.0.1
