@@ -1,14 +1,14 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-target 'enhance', :exclusive => true do
-  pod "enhance", :path => "../"
-end
-
-target 'Tests', :exclusive => true do
+target 'enhance' do
   pod "enhance", :path => "../"
 
-  pod 'Specta', '~> 0.2.1'
-  pod 'Expecta'
-  pod 'FBSnapshotTestCase'
-  pod 'Expecta+Snapshots'
+    target 'Tests' do
+      inherit! :search_paths
+
+      pod 'Specta', '~> 1.0'
+      pod 'Expecta', '~> 1.0'
+      pod 'FBSnapshotTestCase'
+      pod 'Expecta+Snapshots'
+    end
 end

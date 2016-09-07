@@ -1,7 +1,7 @@
-# reference: http://www.objc.io/issue-6/travis-ci.html
-
+osx_image: xcode7.3
 language: objective-c
-before_install:
-- cd Example && pod install && cd -
+podfile: Example/Podfile
+cache:
+  - cocoapods
 script:
-- xctool test -workspace Example/enhance.xcworkspace -scheme Tests -sdk iphonesimulator
+- set -o pipefail && xcodebuild -workspace Example/enhance.xcworkspace -scheme Tests -configuration Debug clean build test -sdk iphonesimulator -destination platform="iOS Simulator,OS=latest,name=iPhone 6" | xcpretty -c

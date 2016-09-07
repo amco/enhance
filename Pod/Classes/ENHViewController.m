@@ -28,6 +28,11 @@ static const CGFloat __blurSaturationDeltaMask = 0.8f;
 static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint the background view
 
 
+NS_OPTIONS(NSInteger, ENHErrorCode) {
+    ENHImageLoadFailed
+};
+
+
 @interface ENHViewController () <UIScrollViewDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) UIView *fromView;
