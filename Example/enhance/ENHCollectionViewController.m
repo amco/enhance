@@ -31,7 +31,7 @@
 {
     UIImage *img = self.images[indexPath.item];
     UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
-    self.enhancer.backgroundColor = self.overlayColors[indexPath.item];
+    self.enhancer.overlayColor = self.overlayColors[indexPath.item];
     [self.enhancer showImage:img fromView:cell];
 }
 
