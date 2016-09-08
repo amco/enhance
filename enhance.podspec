@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "enhance"
-  s.version          = "0.3.1"
+  s.version          = "0.4.0"
   s.summary          = "A simple image viewer with zooming and UIDynamics for maximum fun"
   s.description      = <<-DESC
                        * Got some images?
@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/amco/enhance.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/adamyanalunas'
 
-  s.platform     = :ios, '7.0'
+  s.platform     = :ios, '8.0'
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes'

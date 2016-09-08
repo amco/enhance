@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.4.0](https://github.com/amco/enhance/releases/tag/0.4.0)
+
+* Update to CocoaPods 1.x Podfile in the Example app
+* Build Example app with Xcode 8, along with associated changes to project files
+* Fix broken overlay color assignment in Example app
+
 ## [0.3.1](https://github.com/amco/enhance/releases/tag/0.3.1)
 
 * Allow color of overlay layer between background and image to be customized.
